@@ -433,7 +433,6 @@ load_portal_configuration (gboolean opt_verbose)
 
   desktops = get_current_lowercase_desktops ();
 
-  /* We need to override this in the tests */
   portal_dir = g_getenv ("NIXOS_XDG_DESKTOP_PORTAL_CONFIG_DIR_OVERRIDE");
 
   if (portal_dir != NULL)
