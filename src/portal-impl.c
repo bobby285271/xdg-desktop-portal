@@ -434,7 +434,7 @@ load_portal_configuration (gboolean opt_verbose)
   desktops = get_current_lowercase_desktops ();
 
   /* We need to override this in the tests */
-  portal_dir = g_getenv ("XDG_DESKTOP_PORTAL_DIR");
+  portal_dir = g_getenv ("NIXOS_XDG_DESKTOP_PORTAL_CONFIG_DIR_OVERRIDE");
 
   if (portal_dir != NULL)
     {
@@ -463,6 +463,18 @@ load_portal_configuration (gboolean opt_verbose)
   /* ${sysconfdir}/xdg-desktop-portal/(DESKTOP-)portals.conf */
   if (load_config_directory (SYSCONFDIR "/" XDP_SUBDIR, desktops, opt_verbose))
     return;
+
+  portal_dir = g_getenv ("NIXOS_XDG_DESKTOP_PORTAL_CONFIG_DIR");
+
+  if (portal_dir == NULL)
+    /* We need to override this in the tests */
+    portal_dir = g_getenv ("XDG_DESKTOP_PORTAL_DIR");
+
+  if (portal_dir != NULL)
+    {
+      if (load_config_directory (portal_dir, desktops, opt_verbose))
+        return;
+    }
 
   /* $XDG_DATA_HOME/xdg-desktop-portal/(DESKTOP-)portals.conf
    * (just for consistency with other XDG specifications) */
